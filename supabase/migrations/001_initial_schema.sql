@@ -1,5 +1,12 @@
 -- Enable UUID extension if not exists
-CREATE EXTENSION IF NOT EXISTS "uuid-ossp";
+CREATE EXTENSION IF NOT EXISTS "uuid-ossp" WITH SCHEMA public;
+
+-- Create the uuid_generate_v4() function if it doesn't exist
+CREATE OR REPLACE FUNCTION public.uuid_generate_v4()
+RETURNS uuid
+LANGUAGE c
+AS '$libdir/uuid-ossp', 'uuid_generate_v4';
+
 
 -- Drop tables if they exist (in reverse order of dependencies)
 DROP TABLE IF EXISTS public.order_items CASCADE;
